@@ -22,13 +22,25 @@ const visitLinkButton = document.getElementById("visitLinkButton");
 
 const placeholderImageUrl = "images/park_images/placeholder.png";
 
+//TODO
+/*
+Format the output better
+Pretty up the code
+comment the work
+add the logic behind choosing which filter or both.
+Make so that you don't need to scroll on the site, and there will
+Instead be a carousel type setup.
+Maybe for smaller site turn it from a carousel into a listbox.
+*/
+
+
 window.onload = function () {
     loadDropDowns();
     locationDropDown.onchange = onLocationDropDownChanged;
 
 }
 
-//refactor it all and stuff
+
 
 function loadDropDowns() {
 
@@ -88,7 +100,7 @@ function onParkDropDownChanged() {
 }
 
 
-//god help me
+//Needs to be prettied up
 function createCard(imageUrl, id, title, mainText, footerText, websiteUrl) {
     // div col-4
     let colDiv = document.createElement("div");
