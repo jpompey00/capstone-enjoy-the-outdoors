@@ -11,16 +11,24 @@ const parkTypeOutputDiv = document.getElementById("parkTypeOutputDiv");
 
 const outputDiv = document.getElementById("outputDiv");
 
+//modal elements
+const modalTitle = document.getElementById("modalTitle");
+const modalImage = document.getElementById("modalImage");
+const modalBodyText = document.getElementById("modalBodyText");
+const closeModalButton = document.getElementById("closeModalButton");
+const visitLinkButton = document.getElementById("visitLinkButton");
+
+
+
 const placeholderImageUrl = "images/park_images/placeholder.png";
 
 window.onload = function () {
     loadDropDowns();
     locationDropDown.onchange = onLocationDropDownChanged;
-    //parkTypeDropDown.onchange = onParkDropDownChanged;
-    //viewAllButton.onclick = onViewAllButtonClicked;
-    
+
 }
 
+//refactor it all and stuff
 
 function loadDropDowns() {
 
@@ -41,11 +49,11 @@ function loadDropDowns() {
     }
 }
 
-function onViewAllButtonClicked(){
+function onViewAllButtonClicked() {
     locationOutputDiv.innerHTML = "";
-    for(let nationalPark of nationalParksArray){
+    for (let nationalPark of nationalParksArray) {
         let locationOutput = document.createElement("p");
-        locationOutput .innerHTML = nationalPark.LocationName;
+        locationOutput.innerHTML = nationalPark.LocationName;
         locationOutputDiv.appendChild(locationOutput);
     }
 }
@@ -55,11 +63,8 @@ function onLocationDropDownChanged() {
     outputDiv.innerHTML = "";
     for (let nationalPark of nationalParksArray) {
         if (nationalPark.State == locationDropDown.value) {
-            // let locationOutput = document.createElement("p");
-            // locationOutput.innerHTML = nationalPark.LocationName;
-            // outputDiv.appendChild(locationOutput);
             let address = formatAddress(nationalPark);
-            createCard(placeholderImageUrl,nationalPark.LocationName,address,nationalPark.LocationID,
+            createCard(placeholderImageUrl, nationalPark.LocationID, nationalPark.LocationName, address, nationalPark.LocationID,
                 "placeholder"
             );
         }
@@ -68,14 +73,14 @@ function onLocationDropDownChanged() {
 }
 
 function onParkDropDownChanged() {
-    
+
     parkTypeOutputDiv.innerHTML = "";
     for (let nationalPark of nationalParksArray) {
 
-        if(nationalPark.LocationName.includes(parkTypeDropDown.value)){
+        if (nationalPark.LocationName.includes(parkTypeDropDown.value)) {
             let paragraphOutput = document.createElement("p");
             paragraphOutput.innerHTML = nationalPark.LocationName;
-            
+
             parkTypeOutputDiv.appendChild(paragraphOutput);
         }
 
@@ -84,17 +89,22 @@ function onParkDropDownChanged() {
 
 
 //god help me
-function createCard(imageUrl, title, mainText, footerText, websiteUrl){
+function createCard(imageUrl, id, title, mainText, footerText, websiteUrl) {
     // div col-4
     let colDiv = document.createElement("div");
     colDiv.classList.add("col-4");
     // div card text-bg-dark image-hover
     //TODO: ADD THE DATA-BS-TOGGLE AND TARGET AND POINT IT CORRECTLY
     let cardDiv = document.createElement("div");
-    cardDiv.classList.add("card", "text-bg-dark", "image-hover");
+    cardDiv.classList.add( "card", "text-bg-dark", "image-hover");
+    cardDiv.dataset.bsToggle = "modal";
+    cardDiv.id = id;
+    cardDiv.setAttribute("onClick", "editModal(this.id)");
+    //change this to a variable maybe
+    cardDiv.dataset.bsTarget = "#informationModal";
     // img
     let image = document.createElement("img");
-    image.classList.add("card-img"); 
+    image.classList.add("card-img");
     // div card-img-overlay
     let cardImgOverlayDiv = document.createElement("div");
     cardImgOverlayDiv.classList.add("card-img-overlay");
@@ -127,58 +137,32 @@ function createCard(imageUrl, title, mainText, footerText, websiteUrl){
     cardImgOverlayDiv.appendChild(mainCardText);
     cardImgOverlayDiv.appendChild(footerCardText);
 
-    
+
 
     outputDiv.appendChild(colDiv);
 }
 
 
-function createModal(){
-    //div
-    let modalDiv = document.createElement("div");
-    modalDiv.classList("modal", "fade");
-    modalDiv.tabIndex = "-1";
-    modalDiv.id = "cardModal1";
-    //div
-    let modalDialogDiv = document.createElement("div");
-    modalDialogDiv.classList("modal-dialog", "modal-x1");
-    //div
-    let modalContentDiv = document.createElement("div");
-    modalContentDiv.classList("modal-content");
-        //div
-        let modalHeaderDiv = document.createElement("div");
-        modalHeaderDiv.classList("modal-header", "border-0");
-            //button
-            let button = document.createElement("button");
-            button.classList("btn-close");
-            button.type = "button";
-            //How does this work.
-            //button.data-bs-dismiss = "modal";
-        //div
-        let modalBodyDiv = document.createElement("div");
-        modalBodyDiv.classList("modal-body", "text-center", "pb-5");
-            //div
-            let containerDiv = document.createElement("div");
-            containerDiv.classList("container");
-                //div
-                let rowDiv = document.createElement("div");
-                rowDiv.classList("row", "justify-content-center");
-                    //div
-                        //h2
-                        //div
-                            //div
-                            //div
-                                //i
-                            //div
-                        //img
-                        //button
-                            //i
 
+//I FIGURED IT OUUUUUT AWOOOOOOOOOOOO
+function editModal(id){ 
 
+    console.log(id);
+    for(let nationalPark of nationalParksArray){
+        if(nationalPark.LocationID == id){
+            modalTitle.innerHTML = nationalPark.LocationName;
+            modalImage.src = placeholderImageUrl;
+            modalBodyText.innerHTML = formatAddress(nationalPark);
+        }
+    }
 
 }
 
 
-function formatAddress(nationalPark){
-    return `${nationalPark.address}, ${nationalPark.city}, ${nationalPark.state}, ${nationalPark.zipcode}`
+function formatAddress(nationalPark) {
+    return `${nationalPark.Address}, ${nationalPark.City}, ${nationalPark.State}, ${nationalPark.ZipCode}`
 }
+
+
+
+
