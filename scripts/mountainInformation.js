@@ -36,7 +36,7 @@ function onMountainSearchDropdownChanged(){
             mountainElevation.innerHTML = mountain.elevation;
             console.log(mountain.coords.lat, mountain.coords.lng);
             
-            //sets the sunrise and sunset
+
             getSunsetForMountain(
                 mountain.coords.lat, mountain.coords.lng
             ).then(data => {

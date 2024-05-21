@@ -54,16 +54,137 @@
         <div class="container position-relative">
             <!--The great challenge, Centering an Element :D-->
             <div class="row">
-                <div class = "col">
-                    <div id = "radioButtonContainer" style="background-color: yellow;">
-                        <p>Filter by (placeholder):</p>
-                        <label for = "locationRadioButton"> Location: </label> 
-                        <input id = "locationRadioButton" type="radio" name = "parkfilter">
-                        <input id = "parkTypeRadioButton" type="radio" name ="parkfilter">
-
+                <div class="col">
+                    <div id="radioButtonContainer" style="background-color: yellow;">
+                        <p> (placeholder) Filter by:</p>
+                        <label for="locationRadioButton"> Location: </label>
+                        <input id="locationRadioButton" type="radio" name="parkfilter">
+                        <label for="parkTypeRadioButton"> Park Type: </label>
+                        <input id="parkTypeRadioButton" type="radio" name="parkfilter">
                     </div>
                 </div>
             </div>
+
+
+            <div id="locationFilterContainer" class="row">
+                <div class="col">
+
+                    <div style="background-color: pink;">
+                        <!--Search By Location-->
+                        <select id="locationDropDown">
+
+                        </select>
+                        <div id="locationOutputDiv">
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="parkTypeFilterContainer" class="row">
+                <div class="col">
+                    <div style="background-color: blue;">
+                        <!--Search by ParkType-->
+                        <select id="parkTypeDropDown">
+
+                        </select>
+                        <div id="parkTypeOutputDiv">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!--The Card Setup I'll use-->
+            <div class="row">
+                <!--Make the image a bit darker-->
+                <div class="col-4">
+                    <div class="card text-bg-dark image-hover" data-bs-toggle="modal" data-bs-target="#portfolioModal1">
+                        <img src="images/Adams-StoryImage_2.jpg" class="card-img" alt="...">
+                        <div class="card-img-overlay">
+                            <h5 class="card-title">Card title</h5>
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
+                                additional content. This content is a little bit longer.</p>
+                            <p class="card-text"><small>Last updated 3 mins ago</small></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+
+            <!--Needs to be near the bottom of the active menu element-->
+            <input id="submitButton" type="button" value="View All">
+
+
+
+            <!-- Card Modal Add Info-->
+            <div class="modal fade" id="portfolioModal1" tabindex="-1" aria-labelledby="portfolioModal1"
+                aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header border-0"><button class="btn-close" type="button"
+                                data-bs-dismiss="modal" aria-label="Close"></button></div>
+                        <div class="modal-body text-center pb-5">
+                            <div class="container">
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-8">
+                                        <!-- Portfolio Modal - Title-->
+                                        <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">Graffiti
+                                            Removal
+                                        </h2>
+                                        <!-- Icon Divider-->
+                                        <div class="divider-custom">
+                                            <div class="divider-custom-line"></div>
+                                            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                                            <div class="divider-custom-line"></div>
+                                        </div>
+                                        <!-- Portfolio Modal - Image-->
+                                        <img class="img-fluid rounded mb-5"
+                                            src="assets/img/work_photos/picture6_graffiti_clean.jpg" alt="..." />
+                                        <!-- Portfolio Modal - Text-->
+                                        <!-- <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, 
+                                    molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p> -->
+                                        <button class="btn btn-primary" data-bs-dismiss="modal">
+                                            <i class="fas fa-xmark fa-fw"></i>
+                                            Close Window
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         </div>
 
     </main>
