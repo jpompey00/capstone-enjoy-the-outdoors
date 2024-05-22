@@ -17,6 +17,11 @@ const modalImage = document.getElementById("modalImage");
 const modalBodyText = document.getElementById("modalBodyText");
 const closeModalButton = document.getElementById("closeModalButton");
 const visitLinkButton = document.getElementById("visitLinkButton");
+const modalPhoneText = document.getElementById("modalPhoneText");
+const modalFaxText = document.getElementById("modalFaxText");
+const modalLocationIdText = document.getElementById("modalLocationIdText");
+
+let visitLink;
 
 
 
@@ -35,9 +40,11 @@ Maybe for smaller site turn it from a carousel into a listbox.
 
 
 window.onload = function () {
+    visitLinkButton.style.display = "none";
     loadDropDowns();
     locationDropDown.onchange = onLocationDropDownChanged;
-
+    parkTypeDropDown.onchange = onParkDropDownChanged;
+    visitLinkButton.onclick = onVisitLinkButtonClicked;
 }
 
 
@@ -86,14 +93,15 @@ function onLocationDropDownChanged() {
 
 function onParkDropDownChanged() {
 
-    parkTypeOutputDiv.innerHTML = "";
+    outputDiv.innerHTML = "";
     for (let nationalPark of nationalParksArray) {
+        
+        if (nationalPark.LocationName.includes(parkTypeDropDown.value) == true) {
 
-        if (nationalPark.LocationName.includes(parkTypeDropDown.value)) {
-            let paragraphOutput = document.createElement("p");
-            paragraphOutput.innerHTML = nationalPark.LocationName;
-
-            parkTypeOutputDiv.appendChild(paragraphOutput);
+            let address = formatAddress(nationalPark);
+            createCard(placeholderImageUrl, nationalPark.LocationID, nationalPark.LocationName, address, nationalPark.LocationID,
+                "placeholder"
+            );
         }
 
     }
@@ -104,7 +112,7 @@ function onParkDropDownChanged() {
 function createCard(imageUrl, id, title, mainText, footerText, websiteUrl) {
     // div col-4
     let colDiv = document.createElement("div");
-    colDiv.classList.add("col-4");
+    colDiv.classList.add("col-4", "my-4");
     // div card text-bg-dark image-hover
     //TODO: ADD THE DATA-BS-TOGGLE AND TARGET AND POINT IT CORRECTLY
     let cardDiv = document.createElement("div");
@@ -119,7 +127,10 @@ function createCard(imageUrl, id, title, mainText, footerText, websiteUrl) {
     image.classList.add("card-img");
     // div card-img-overlay
     let cardImgOverlayDiv = document.createElement("div");
-    cardImgOverlayDiv.classList.add("card-img-overlay");
+    cardImgOverlayDiv.classList.add("card-img-overlay", "cardGradient", "d-flex", "flex-column",
+    "justify-content-end"
+    );
+    
     // h5 -Title test
     let cardTitleH5 = document.createElement("h5");
     cardTitleH5.classList.add("card-title");
@@ -156,7 +167,7 @@ function createCard(imageUrl, id, title, mainText, footerText, websiteUrl) {
 
 
 
-//I FIGURED IT OUUUUUT AWOOOOOOOOOOOO
+//I FIGURED IT OUT
 function editModal(id){ 
 
     console.log(id);
@@ -165,6 +176,17 @@ function editModal(id){
             modalTitle.innerHTML = nationalPark.LocationName;
             modalImage.src = placeholderImageUrl;
             modalBodyText.innerHTML = formatAddress(nationalPark);
+            modalPhoneText.innerHTML = nationalPark.Phone;
+            modalFaxText.innerHTML = nationalPark.Fax;
+            modalLocationIdText.innerHTML = nationalPark.LocationID;
+            if(nationalPark.Visit != undefined){
+                visitLinkButton.style.display = "inline";
+                visitLink = nationalPark.Visit;
+            } else {
+                visitLinkButton.style.display = "none";
+                visitLink = undefined;
+            }
+            
         }
     }
 
@@ -175,6 +197,12 @@ function formatAddress(nationalPark) {
     return `${nationalPark.Address}, ${nationalPark.City}, ${nationalPark.State}, ${nationalPark.ZipCode}`
 }
 
-
+function onVisitLinkButtonClicked(){
+    if(visitLink != undefined){
+        window.open(visitLink, "_blank");
+    }else {
+        console.log("no link");
+    }
+}
 
 
