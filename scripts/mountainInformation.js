@@ -12,16 +12,42 @@ const modalEffort = document.getElementById("modalEffort");
 const modalLatitudeAndLongitudeText = document.getElementById("modalLatitudeAndLongitudeText");
 const modalSunriseSunset = document.getElementById("modalSunriseSunset");
 
+
 /*
 TODO:
-Format the modal
-Style the site more
+
 Add the part of the modal that will show the time.
 Maybe make it blink
 */
 
 window.onload = function () {
     loadDropDown();
+
+    //parseSunriseSunset();
+
+}
+
+function isCloserToSunset(sunrise, sunset) {
+
+    //whichever difference is smaller will be what you're closer too?
+    //will there ever be a situation where the sunrise will be bigger than the current?
+
+    //Do it in the absolute value for both of them, 
+    //the difference is what you're closer to
+
+    //have it return true or false, call it closerToSunset.
+    //make a catch for it being equal if that ever happens ever. later
+
+
+    let sunriseDate = convertTo24Hours(sunrise).getTime();
+    let sunsetDate = convertTo24Hours(sunset).getTime();
+    let currentDate = new Date().getTime();
+    //means its closer to the sunset
+    if (Math.abs(currentDate - sunriseDate) > Math.abs(currentDate - sunsetDate)) {
+        return true
+    } else {
+        return false
+    }
 
 }
 
@@ -35,39 +61,6 @@ function loadDropDown() {
 }
 
 
-//Delete this
-function onMountainSearchDropdownChanged() {
-
-
-    let mountainNameElement = document.createElement("p");
-    let mountaintDescription = document.createElement("p");
-    let mountainElevation = document.createElement("p");
-    let otherMountainFacts = document.createElement("p");
-
-    cardContainer.innerHTML = "";
-    // for(let mountain of mountainsArray){
-    //     if(mountainSearchDropdown.value == mountain.name){
-    //         mountainNameElement.innerHTML = mountain.name;
-    //         mountaintDescription.innerHTML = mountain.desc;
-    //         mountainElevation.innerHTML = mountain.elevation;
-    //         console.log(mountain.coords.lat, mountain.coords.lng);
-
-
-    //         getSunsetForMountain(
-    //             mountain.coords.lat, mountain.coords.lng
-    //         ).then(data => {
-    //             otherMountainFacts.innerHTML = `Sunrise: ${data.results.sunrise}
-    //             Sunset: ${data.results.sunset}`; 
-    //         });
-
-
-    //         outputDiv.appendChild(mountainNameElement);
-    //         outputDiv.appendChild(mountaintDescription);
-    //         outputDiv.appendChild(mountainElevation);
-    //         outputDiv.appendChild(otherMountainFacts);
-    //     }
-    // }
-}
 
 
 function createListingCard(mountain) {
@@ -119,35 +112,51 @@ function createListingCard(mountain) {
 
 
 //this works
-function editModal(id){
-    for(let mountain of mountainsArray){
-        if(mountain.name == id){
+async function editModal(id) {
+    let sunrise;
+    let sunset;
+    let data;
+    for (let mountain of mountainsArray) {
+        if (mountain.name == id) {
+            
             modalTitle.innerHTML = mountain.name;
 
             modalImage.src = `images/${mountain.img}`;
-            
+
 
             modalDescription.innerHTML = mountain.desc;
             modalElevation.innerHTML = `Elevation: ${mountain.elevation}`;
             modalEffort.innerHTML = `Effort: ${mountain.effort}`;
-            modalLatitudeAndLongitudeText.innerHTML  = `${convertDmmToDms(mountain.coords.lat,true)}, 
-            ${convertDmmToDms(mountain.coords.lng,false)}`;
+            modalLatitudeAndLongitudeText.innerHTML = `${convertDmmToDms(mountain.coords.lat, true)}, 
+            ${convertDmmToDms(mountain.coords.lng, false)}`;
 
             //analyze how this works so i can explain it
-            getSunsetForMountain(
-                            mountain.coords.lat, mountain.coords.lng
-                        ).then(data => {
-                            modalSunriseSunset.innerHTML = `Sunrise: ${data.results.sunrise}
-                            Sunset: ${data.results.sunset}`; 
-                        });
-            
-                        
-                        
+            //put these in a try catch block
+            data = await getSunsetForMountain(mountain.coords.lat, mountain.coords.lng)
+            //WHY DONT THIS????
 
+            sunrise = data.results.sunrise;
+            sunset = data.results.sunset;
+
+            modalSunriseSunset.innerHTML = `Sunrise: ${sunrise} Sunset: ${sunset}`;
+
+            if(isCloserToSunset(sunrise,sunset)){
+                //change the background color of the modal here
+                //when it's closer to sunset, have the modal have the background color
+                //with a gradient that's more night themed
+
+            } else {
+                //change the backgrounc olor of the modal here
+                //when its closer to sunrise, have the modal have the background color
+                //with a day themed gradient
+                
+            }
         }
     }
 
 }
+
+
 
 
 function convertDmmToDms(DMM, Lat) {
@@ -182,6 +191,19 @@ function convertDmmToDms(DMM, Lat) {
 }
 
 
+function convertTo24Hours(time) {
+    let convertedTime = new Date();
+
+    if (time.includes("AM")) {
+        const [hours, minutes, seconds] = time.slice(0, 7).split(":").map(Number);
+        convertedTime.setHours(hours, minutes, seconds, 0);
+
+    } else if (time.includes("PM")) {
+        const [hours, minutes, seconds] = time.slice(0, 7).split(":").map(Number);
+        convertedTime.setHours(hours + 12, minutes, seconds, 0);
+    }
+    return convertedTime
+}
 
 //put this in its own script for API calls
 async function getSunsetForMountain(lat, lng) {
@@ -190,4 +212,6 @@ async function getSunsetForMountain(lat, lng) {
     let data = await response.json();
     return data;
 }
+
+
 

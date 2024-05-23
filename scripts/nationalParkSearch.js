@@ -1,6 +1,11 @@
 "use strict";
 //intellisense
 
+const images = ["park00.png", "park01.png","park02.png","park03.png",
+"park04.png","park05.png","park06.png","park07.png","park08.png","park09.png",
+"park10.png","park11.png","park12.png", "wizardkickflip.png"];
+
+
 //replace with query selector for fun.
 const locationDropDown = document.getElementById("locationDropDown");
 const parkTypeDropDown = document.getElementById("parkTypeDropDown");
@@ -32,7 +37,8 @@ let visitLink;
 
 
 
-const placeholderImageUrl = "images/park_images/placeholder.png";
+//randomly apply image.
+const placeholderImageUrl = "images/assets/placeholder.png";
 
 //TODO
 /*
@@ -60,8 +66,14 @@ function loadDropDowns() {
 
     let theOption = new Option("Select An Option", "");
     locationDropDown.appendChild(theOption);
+  
 
     theOption = new Option("Select An Option", "");
+    parkTypeDropDown.appendChild(theOption);
+
+    theOption = new Option("View All", "View All");
+    locationDropDown.appendChild(theOption);
+    theOption = new Option("View All", "View All");
     parkTypeDropDown.appendChild(theOption);
 
     for (let location of locationsArray) {
@@ -88,12 +100,13 @@ function onViewAllButtonClicked() {
 
 function updateOutput() {
     outputDiv.innerHTML = "";
+    
     let filteredParks = filterParks();
     for (let nationalPark of filteredParks) {
 
         let address = formatAddress(nationalPark);
-        createCard(placeholderImageUrl, nationalPark.LocationID, nationalPark.LocationName, address, nationalPark.LocationID,
-            "placeholder"
+        createCard( `images/park-images/edited-images/${images[createRandomNumber()]}` , nationalPark.LocationID, nationalPark.LocationName, address, nationalPark.LocationID,
+
         );
 
     }
@@ -130,15 +143,20 @@ function filterParks() {
     let nationalParks = nationalParksArray;
 
     if (locationCheckbox.checked) {
-        nationalParks = nationalParks.filter((park) => park.State == locationDropDown.value);
+        if(locationDropDown.value != "View All" && locationDropDown.value != ""){
+            nationalParks = nationalParks.filter((park) => park.State == locationDropDown.value);
+        } 
     }
 
     if (parkTypeCheckbox.checked) {
-        nationalParks = nationalParks.filter((park) => park.LocationName.includes(parkTypeDropDown.value));
+        if(parkTypeDropDown.value != "View All" && parkTypeDropDown.value != ""){
+            
+            nationalParks = nationalParks.filter((park) => park.LocationName.includes(parkTypeDropDown.value));
+        }
     }
 
     console.log(nationalParks);
-    if(locationCheckbox.checked || parkTypeCheckbox.checked ){
+    if((locationCheckbox.checked && locationDropDown.value != "" )|| (parkTypeCheckbox.checked && parkTypeDropDown.value != "" )){
             console.log("returning");
         return nationalParks;
     } else {
@@ -151,7 +169,7 @@ function filterParks() {
 
 
 //Needs to be prettied up
-function createCard(imageUrl, id, title, mainText, footerText, websiteUrl) {
+function createCard(imageUrl, id, title, mainText, footerText) {
     // div col-4
     let colDiv = document.createElement("div");
     colDiv.classList.add("col-4", "my-4");
@@ -161,7 +179,12 @@ function createCard(imageUrl, id, title, mainText, footerText, websiteUrl) {
     cardDiv.classList.add("card", "text-bg-dark", "image-hover");
     cardDiv.dataset.bsToggle = "modal";
     cardDiv.id = id;
-    cardDiv.setAttribute("onClick", "editModal(this.id)");
+    cardDiv.setAttribute("data-img-url", imageUrl);
+
+    console.log(imageUrl);
+    cardDiv.setAttribute("onClick", "editModal(this.id, this.getAttribute('data-img-url'))");
+
+
     //change this to a variable maybe
     cardDiv.dataset.bsTarget = "#informationModal";
     // img
@@ -211,13 +234,16 @@ function createCard(imageUrl, id, title, mainText, footerText, websiteUrl) {
 
 //I FIGURED IT OUT
 //check for when number is 0 or when Address is 0
-function editModal(id) {
+function editModal(id, imgUrl) {
 
     console.log(id);
     for (let nationalPark of nationalParksArray) {
         if (nationalPark.LocationID == id) {
             modalTitle.innerHTML = nationalPark.LocationName;
-            modalImage.src = placeholderImageUrl;
+            // modalImage.src = "images/park-images/edited-images/park01.png";
+            modalImage.src = imgUrl;
+            // console.log(placeholderImageUrl);
+            // console.log(imgUrl);
 
 
             modalAddress1.innerHTML = nationalPark.Address == 0 ? formatAddress(nationalPark) : nationalPark.Address;
@@ -242,7 +268,7 @@ function editModal(id) {
 }
 
 
-
+//better way to do this but it works for now.
 function onVisitLinkButtonClicked() {
     if (visitLink != undefined) {
         window.open(visitLink, "_blank");
@@ -290,7 +316,12 @@ function convertDmmToDms(DMM, Lat) {
 
 
 
-
+function createRandomNumber(){
+    //console.log(images.length)
+    let random = Math.floor(Math.random() * (images.length) )
+    console.log(random);
+    return random
+}
 
 
 

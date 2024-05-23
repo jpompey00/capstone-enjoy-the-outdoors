@@ -13094,7 +13094,7 @@ filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#000000", en
     position: relative;
     z-index: 2;
     background-color: #fff;
-    color: #262ff;
+    color: #0262FF;
     width: 150px;
     height: 40px;
     text-align: center;
@@ -13109,6 +13109,10 @@ filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#000000", en
 
 .card a:hover {}
 
+/*My own CSS*/
+
+
+
 .custom-colored-background {
     background: rgb(175, 221, 233);
     background: linear-gradient(202deg, rgba(175, 221, 233, 1) 0%, rgba(135, 205, 222, 1) 100%);
@@ -13116,5 +13120,13 @@ filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#000000", en
 
 .custom-colored-icon{
     color:black;
-    
 }
+
+.custom-colored-button{
+    background: #7CDDE9;
+}
+
+.custom-colored-button:hover{
+    background: #6BBDC6;
+}
+

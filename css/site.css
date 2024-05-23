@@ -83,8 +83,17 @@ body,
   box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
 }
 
+.national-park-header{
+    background-image: url(/images/assets/header_image.jpg) ;
+}
+
+.mountain-info-header{
+    background-image: url(/images/assets/mountain_header.jpg);
+}
+
 body {
 
+    font-family: "Varela Round", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     background-color: #CEDFEA;
 }
 
@@ -93,8 +102,9 @@ body {
 }
 
 
-.cardGradient{
-/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+100&0+0,0.65+100 */
-background: linear-gradient(to bottom,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+/* .cardGradient{
 
-}
+background: linear-gradient(to bottom,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%); 
+
+} */
+
