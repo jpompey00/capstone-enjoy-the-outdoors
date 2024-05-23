@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="css/site.css">
 </head>
 
-<body class = "mountainBody">
+<body class="mountainBody">
     <!--Change The Body for the website-->
     <header>
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -57,7 +57,7 @@
         <div class="bg-image h-100">
             <div class="mask d-flex align-items-center py-4 h-100" style="background-color: rgba(61, 162, 195, 0.1);
             background-image: url(images/park_images/mountain_header.jpg);">
-                <div class="container" ">
+                <div class="container">
                     <div class="card mask-custom p-4">
                         <div class="card-body">
                             <p class="h1 font-weight-bold mb-1 text-white">Mountain Information</p>
@@ -79,42 +79,91 @@
 
 
 
-            <!--Modal to Edit-->
-            <!-- Card Modal Add Info-->
-            <div class="modal fade" id="portfolioModal1" tabindex="-1" aria-labelledby="portfolioModal1"
+            <!--NEW MODAL-->
+
+            <div id="portfolioModal1" class="modal fade" tabindex="-1" aria-labelledby="informationModal"
                 aria-hidden="true">
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <div class="modal-header border-0">
+
+                            <!--Close Button-->
                             <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
+
                         <div class="modal-body text-center pb-5">
                             <div class="container">
-                                <div class="row justify-content-center">
-                                    <div class="col-lg-8">
-                                        <!-- Portfolio Modal - Title-->
-                                        <h2 id="modalTitle"
-                                            class="portfolio-modal-title text-secondary text-uppercase mb-0">
-                                            National Park Title
-                                        </h2>
+                                <div class="row justify-content-center"> <!--justify-content-center-->
+                                    <div class="col-lg-10">
                                         <div class="row">
                                             <div class="col">
-                                                <img id="modalImage" class="img-fluid rounded mb-5"
-                                                    src="images/Adams-StoryImage_2.jpg" alt="..." />
-                                            </div>
-                                            <div class="col">
-                                                <p id="modalTextBox" class="mb-4">Lorem ipsum dolor sit amet,
-                                                    consectetur adipisicing
-                                                    elit. Mollitia neque assumenda ipsam nihil,
-                                                    molestias magnam, recusandae quos quis inventore quisquam velit
-                                                    asperiores, vitae? Reprehenderit soluta, eos quod consequuntur
-                                                    itaque. Nam.</p>
+                                                <!-- Modal - Title-->
+                                                <h2 id="modalTitle" class="text-secondary text-uppercase mb-4">
+                                                    Mountain Title
+                                                </h2>
+
                                             </div>
                                         </div>
-                                        <button class="btn btn-primary" data-bs-dismiss="modal">
 
-                                            Close Window
-                                        </button>
+
+                                        <div class="row">
+                                            <div class="col">
+
+                                                <div class="row">
+                                                    <!--Modal Image-->
+                                                    <div class="col">
+
+                                                        <!--Resize Image-->
+                                                        <img id="modalImage" class="img-fluid rounded mb-5"
+                                                            src="" alt="..." />
+
+
+
+                                                    </div>
+
+
+                                                    <!--Modal Body-->
+                                                    <div class="col ">
+
+                                                        <div class="modalTextArea ">
+                                                            <p id="modalDescription" class="mb-5 fs-4 lh-1">Lorem ipsum
+                                                                dolor sit amet,
+                                                                consectetur adipisicing elit. Mollitia neque
+                                                                assumenda ipsam
+                                                                nihil,
+                                                                molestias magnam, recusandae quos quis inventore
+                                                                quisquam
+                                                                velit asperiores, vitae? Reprehenderit soluta, eos
+                                                                quod
+                                                                consequuntur itaque. Nam.
+                                                            </p>
+                                                            <p id="modalElevation" class=" fs-4">Elevation Here</p>
+                                                            <p id="modalEffort" class="fs-4">Effort Here</p>
+                                                            <p id="modalSunriseSunset" class="fs-5">sunrise sunset</p>
+                                                            <p id="modalLatitudeAndLongitudeText" class="fs-6"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+
+
+                                            <div class="row">
+                                                <div class="col-1 d-flex flex-column align-items-end">
+                                                    <!--for spacing-->
+                                                </div>
+                                                <div class="col">
+                                                    <!--Close Button-->
+                                                    <button id="closeModalButton" class="btn btn-primary"
+                                                        data-bs-dismiss="modal">
+                                                        Close Window
+                                                    </button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -122,6 +171,19 @@
                     </div>
                 </div>
             </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     </main>

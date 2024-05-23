@@ -6,7 +6,12 @@ const cardContainer = document.getElementById("cardContainer");
 
 const modalTitle = document.getElementById("modalTitle");
 const modalImage = document.getElementById("modalImage");
-const modalTextBox = document.getElementById("modalTextBox");
+const modalDescription = document.getElementById("modalDescription");
+const modalElevation = document.getElementById("modalElevation");
+const modalEffort = document.getElementById("modalEffort");
+const modalLatitudeAndLongitudeText = document.getElementById("modalLatitudeAndLongitudeText");
+const modalSunriseSunset = document.getElementById("modalSunriseSunset");
+
 /*
 TODO:
 Format the modal
@@ -29,6 +34,8 @@ function loadDropDown() {
     }
 }
 
+
+//Delete this
 function onMountainSearchDropdownChanged() {
 
 
@@ -116,17 +123,71 @@ function editModal(id){
     for(let mountain of mountainsArray){
         if(mountain.name == id){
             modalTitle.innerHTML = mountain.name;
-            modalTextBox.innerHTML = mountain.desc;
+
+            modalImage.src = `images/${mountain.img}`;
+            
+
+            modalDescription.innerHTML = mountain.desc;
+            modalElevation.innerHTML = `Elevation: ${mountain.elevation}`;
+            modalEffort.innerHTML = `Effort: ${mountain.effort}`;
+            modalLatitudeAndLongitudeText.innerHTML  = `${convertDmmToDms(mountain.coords.lat,true)}, 
+            ${convertDmmToDms(mountain.coords.lng,false)}`;
+
+            //analyze how this works so i can explain it
+            getSunsetForMountain(
+                            mountain.coords.lat, mountain.coords.lng
+                        ).then(data => {
+                            modalSunriseSunset.innerHTML = `Sunrise: ${data.results.sunrise}
+                            Sunset: ${data.results.sunset}`; 
+                        });
+            
+                        
+                        
+
         }
     }
 
 }
 
 
+function convertDmmToDms(DMM, Lat) {
+    //Isolate whole number
+    //keep decimal
+    //repeat 2 more times.
+    let direction;
+    if (DMM >= 0) {
+        if (Lat) {
+            direction = "N";
+        } else {
+            direction = "E";
+        }
 
+    } else {
+        if (Lat) {
+            direction = "S";
+        } else {
+            direction = "W";
+        }
+
+    }
+
+    let degrees = Math.floor(DMM);
+    DMM -= degrees;
+    DMM = DMM * 60;
+    let minutes = Math.floor(DMM);
+    DMM -= minutes;
+    DMM = DMM * 60;
+    let seconds = Math.ceil(DMM);
+    return `${degrees}\u00B0${direction},${minutes}'${seconds}"`
+}
+
+
+
+//put this in its own script for API calls
 async function getSunsetForMountain(lat, lng) {
     let response = await fetch(
         `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&date=today`);
     let data = await response.json();
     return data;
 }
+

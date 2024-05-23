@@ -7,7 +7,9 @@
     <title>Bootstrap demo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        
     <link rel="stylesheet" href="css/site.css">
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 
@@ -52,6 +54,7 @@
 
 
     <main>
+
         <!--Search Box intro with Glass Card-->
         <section class="intro">
             <div class="bg-image h-100">
@@ -61,41 +64,49 @@
                         <div class="card mask-custom p-4">
                             <div class="card-body">
                                 <p class="h1 font-weight-bold mb-4 text-white">National Park Search</p>
-                                <div class="row">
-                                    <div class="col">
-                                        <!--May have buttons change color or something-->
-                                        <input type="checkbox" class="btn-check" id="btn-check" autocomplete="off">
-                                        <label class="btn btn-primary" for="btn-check">Location</label>
-                                    </div>
-                                    <div class="col">
-                                        <input type="checkbox" class="btn-check" id="btn-check" autocomplete="off">
-                                        <label class="btn btn-primary" for="btn-check">Park Type</label>
-                                    </div>
-                                </div>
 
                                 <div class="row justify-content-center">
                                     <div class="col">
-                                        <div id="basic" class="form-outline form-white">
-                                            <!--Disable This at the Start-->
+                                        <label class="form-label text-white" for="locationDropDown">Location</label>
+                                        <!--Addition-->
+                                        <div class="input-group form-group mb-3">
+                                            <div class="input-group-text">
+                                                <input id="locationCheckbox" class="form-check-input mt-0"
+                                                    type="checkbox" value=""
+                                                    aria-label="Checkbox for following text input" checked>
+                                            </div>
                                             <select id="locationDropDown"
                                                 class="form-select form-control form-control-lg">
 
                                             </select>
-                                            <!-- <input type="text" id="form1" class="form-control form-control-lg" /> -->
-                                            <label class="form-label text-white" for="locationDropDown">Location</label>
 
                                         </div>
+
+
+
+
+
+
                                     </div>
+
                                     <div class="col">
-                                        <div id="location" class="form-outline form-white">
-                                            <!--Disable This at Start-->
+                                        <label class="form-label text-white" for="locationDropDown">Park Type</label>
+                                        <div class="input-group mb-3 ">
+                                            <div class="input-group-text">
+                                                <input id="parkTypeCheckbox" form-check-input mt-0" type="checkbox"
+                                                    value="" aria-label="Checkbox for following text input">
+                                            </div>
                                             <select id="parkTypeDropDown"
-                                                class="form-select form-control form-control-lg">
+                                                class="form-select form-control form-control-lg" disabled>
 
                                             </select>
-                                            <label class="form-label text-white" for="parkTypeDropDown">Park
-                                                Type</label>
                                         </div>
+
+
+
+
+
+
                                     </div>
 
                                 </div>
@@ -141,46 +152,67 @@
                                             <div class="row">
                                                 <div class="col">
                                                     <!-- Modal - Title-->
-                                                    <h2 id="modalTitle" class="text-secondary text-uppercase mb-0">
+                                                    <h2 id="modalTitle" class="text-secondary text-uppercase mb-4">
                                                         National Park Title
                                                     </h2>
+
                                                 </div>
                                             </div>
 
 
                                             <div class="row">
                                                 <div class="col">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="row">
+                                                                <img id="modalImage" class="img-fluid rounded mb-5"
+                                                                    src="images/Adams-StoryImage_2.jpg" alt="..." />
+                                                            </div>
+                                                            <!--Modal Image-->
+                                                            <div class="row">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <!--Modal Body-->
+                                                            <div class="modalTextArea">
+                                                                <p id="modalAddress1" class="mb-3 fs-3">Lorem ipsum
+                                                                    dolor sit amet,
+                                                                    consectetur adipisicing elit. Mollitia neque
+                                                                    assumenda ipsam
+                                                                    nihil,
+                                                                    molestias magnam, recusandae quos quis inventore
+                                                                    quisquam
+                                                                    velit asperiores, vitae? Reprehenderit soluta, eos
+                                                                    quod
+                                                                    consequuntur itaque. Nam.
+                                                                </p>
+                                                                <p id="modalAddress2" class="mb-5 fs-4">
 
-                                                    <!--Modal Image-->
-                                                    <img id="modalImage" class="img-fluid rounded mb-5"
-                                                        src="images/Adams-StoryImage_2.jpg" alt="..." />
-                                                </div>
-                                                <div class="col">
-
-                                                    <!--Modal Body-->
-                                                    <div class="modalTextArea">
-                                                        <p id="modalBodyText" class="mb-4">Lorem ipsum dolor sit amet,
-                                                            consectetur adipisicing elit. Mollitia neque assumenda ipsam
-                                                            nihil,
-                                                            molestias magnam, recusandae quos quis inventore quisquam
-                                                            velit asperiores, vitae? Reprehenderit soluta, eos quod
-                                                            consequuntur itaque. Nam.
-                                                        </p>
-                                                        <p id="modalPhoneText"></p>
-                                                        <p id="modalFaxText"></p>
-                                                        <p><small id = "modalLocationIdText"></small></p>
+                                                                </p>
+                                                                <p id="modalPhoneText" class="fs-5">404 915 1734</p>
+                                                                <p id="modalFaxText" class="fs-5">404 915 1734</p>
+                                                                <p id="modalLatitudeAndLongitudeText" class="fs-6"></p>
+                                                            </div>
+                                                        </div>
                                                     </div>
+
                                                 </div>
+
+
+
                                                 <div class="row">
+                                                    <div class="col-1 d-flex flex-column align-items-end">
+                                                        <!--for spacing-->
+                                                    </div>
                                                     <div class="col">
                                                         <!--Close Button-->
                                                         <button id="closeModalButton" class="btn btn-primary"
                                                             data-bs-dismiss="modal">
                                                             Close Window
                                                         </button>
+
                                                         <!--Button to Visit Link-->
-                                                        <button id="visitLinkButton" class="btn btn-primary"
-                                                            data-bs-dismiss="modal">
+                                                        <button id="visitLinkButton" class="btn btn-primary">
                                                             Visit
                                                         </button>
                                                     </div>
@@ -194,7 +226,6 @@
                         </div>
                     </div>
                 </div>
-
 
 
             </div>
@@ -218,6 +249,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+
     <script src="scripts/parkTypeData.js"></script>
     <script src="scripts/locationData.js"></script>
     <script src="scripts/nationalParkData.js"></script>

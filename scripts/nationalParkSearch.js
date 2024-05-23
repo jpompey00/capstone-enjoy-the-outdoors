@@ -11,15 +11,22 @@ const parkTypeOutputDiv = document.getElementById("parkTypeOutputDiv");
 
 const outputDiv = document.getElementById("outputDiv");
 
+const locationCheckbox = document.getElementById("locationCheckbox");
+const parkTypeCheckbox = document.getElementById("parkTypeCheckbox");
+
+
 //modal elements
 const modalTitle = document.getElementById("modalTitle");
 const modalImage = document.getElementById("modalImage");
-const modalBodyText = document.getElementById("modalBodyText");
+const modalAddress1 = document.getElementById("modalAddress1");
+const modalAddress2 = document.getElementById("modalAddress2");
 const closeModalButton = document.getElementById("closeModalButton");
 const visitLinkButton = document.getElementById("visitLinkButton");
 const modalPhoneText = document.getElementById("modalPhoneText");
 const modalFaxText = document.getElementById("modalFaxText");
 const modalLocationIdText = document.getElementById("modalLocationIdText");
+const modalLatitudeAndLongitudeText = document.getElementById("modalLatitudeAndLongitudeText");
+
 
 let visitLink;
 
@@ -29,21 +36,21 @@ const placeholderImageUrl = "images/park_images/placeholder.png";
 
 //TODO
 /*
-Format the output better
-Pretty up the code
-comment the work
-add the logic behind choosing which filter or both.
-Make so that you don't need to scroll on the site, and there will
-Instead be a carousel type setup.
-Maybe for smaller site turn it from a carousel into a listbox.
+
+add comments
+add pictures, clean up card code.
 */
 
 
 window.onload = function () {
     visitLinkButton.style.display = "none";
+
     loadDropDowns();
-    locationDropDown.onchange = onLocationDropDownChanged;
-    parkTypeDropDown.onchange = onParkDropDownChanged;
+    locationCheckbox.onclick = onLocationCheckboxClicked;
+    parkTypeCheckbox.onclick = onParkTypeCheckboxClicked;
+
+    locationDropDown.onchange = updateOutput;
+    parkTypeDropDown.onchange = updateOutput;
     visitLinkButton.onclick = onVisitLinkButtonClicked;
 }
 
@@ -77,35 +84,70 @@ function onViewAllButtonClicked() {
     }
 }
 
-function onLocationDropDownChanged() {
 
+
+function updateOutput() {
     outputDiv.innerHTML = "";
-    for (let nationalPark of nationalParksArray) {
-        if (nationalPark.State == locationDropDown.value) {
-            let address = formatAddress(nationalPark);
-            createCard(placeholderImageUrl, nationalPark.LocationID, nationalPark.LocationName, address, nationalPark.LocationID,
-                "placeholder"
-            );
-        }
-    }
+    let filteredParks = filterParks();
+    for (let nationalPark of filteredParks) {
 
-}
-
-function onParkDropDownChanged() {
-
-    outputDiv.innerHTML = "";
-    for (let nationalPark of nationalParksArray) {
-        
-        if (nationalPark.LocationName.includes(parkTypeDropDown.value) == true) {
-
-            let address = formatAddress(nationalPark);
-            createCard(placeholderImageUrl, nationalPark.LocationID, nationalPark.LocationName, address, nationalPark.LocationID,
-                "placeholder"
-            );
-        }
+        let address = formatAddress(nationalPark);
+        createCard(placeholderImageUrl, nationalPark.LocationID, nationalPark.LocationName, address, nationalPark.LocationID,
+            "placeholder"
+        );
 
     }
 }
+
+
+//could not reset the dropdown
+function onLocationCheckboxClicked() {
+    updateOutput();
+
+    if (locationCheckbox.checked) {
+
+        locationDropDown.removeAttribute('disabled');
+    } else {
+
+        locationDropDown.setAttribute("disabled", "");
+    }
+}
+
+function onParkTypeCheckboxClicked() {
+    updateOutput()
+
+    if (parkTypeCheckbox.checked) {
+        parkTypeDropDown.removeAttribute('disabled')
+    } else {
+        parkTypeDropDown.setAttribute("disabled", "");
+    }
+}
+
+
+
+function filterParks() {
+
+    let nationalParks = nationalParksArray;
+
+    if (locationCheckbox.checked) {
+        nationalParks = nationalParks.filter((park) => park.State == locationDropDown.value);
+    }
+
+    if (parkTypeCheckbox.checked) {
+        nationalParks = nationalParks.filter((park) => park.LocationName.includes(parkTypeDropDown.value));
+    }
+
+    console.log(nationalParks);
+    if(locationCheckbox.checked || parkTypeCheckbox.checked ){
+            console.log("returning");
+        return nationalParks;
+    } else {
+        console.log("not retuning")
+        return [];
+    }
+}
+
+
 
 
 //Needs to be prettied up
@@ -116,7 +158,7 @@ function createCard(imageUrl, id, title, mainText, footerText, websiteUrl) {
     // div card text-bg-dark image-hover
     //TODO: ADD THE DATA-BS-TOGGLE AND TARGET AND POINT IT CORRECTLY
     let cardDiv = document.createElement("div");
-    cardDiv.classList.add( "card", "text-bg-dark", "image-hover");
+    cardDiv.classList.add("card", "text-bg-dark", "image-hover");
     cardDiv.dataset.bsToggle = "modal";
     cardDiv.id = id;
     cardDiv.setAttribute("onClick", "editModal(this.id)");
@@ -128,9 +170,9 @@ function createCard(imageUrl, id, title, mainText, footerText, websiteUrl) {
     // div card-img-overlay
     let cardImgOverlayDiv = document.createElement("div");
     cardImgOverlayDiv.classList.add("card-img-overlay", "cardGradient", "d-flex", "flex-column",
-    "justify-content-end"
+        "justify-content-end"
     );
-    
+
     // h5 -Title test
     let cardTitleH5 = document.createElement("h5");
     cardTitleH5.classList.add("card-title");
@@ -168,41 +210,119 @@ function createCard(imageUrl, id, title, mainText, footerText, websiteUrl) {
 
 
 //I FIGURED IT OUT
-function editModal(id){ 
+//check for when number is 0 or when Address is 0
+function editModal(id) {
 
     console.log(id);
-    for(let nationalPark of nationalParksArray){
-        if(nationalPark.LocationID == id){
+    for (let nationalPark of nationalParksArray) {
+        if (nationalPark.LocationID == id) {
             modalTitle.innerHTML = nationalPark.LocationName;
             modalImage.src = placeholderImageUrl;
-            modalBodyText.innerHTML = formatAddress(nationalPark);
-            modalPhoneText.innerHTML = nationalPark.Phone;
-            modalFaxText.innerHTML = nationalPark.Fax;
-            modalLocationIdText.innerHTML = nationalPark.LocationID;
-            if(nationalPark.Visit != undefined){
+
+
+            modalAddress1.innerHTML = nationalPark.Address == 0 ? formatAddress(nationalPark) : nationalPark.Address;
+            modalAddress2.innerHTML = nationalPark.Address == 0 ? "" : formatAddress(nationalPark);
+
+
+            modalPhoneText.innerHTML = nationalPark.Phone == 0 ? "" : `Phone: ${nationalPark.Phone}`;
+            modalFaxText.innerHTML = nationalPark.Fax == 0 ? "" : `Fax ${nationalPark.Fax}`;
+
+            modalLatitudeAndLongitudeText.innerHTML = `${convertDmmToDms(nationalPark.Latitude, true)}, ${convertDmmToDms(nationalPark.Longitude, false)}`
+            if (nationalPark.Visit != undefined) {
                 visitLinkButton.style.display = "inline";
                 visitLink = nationalPark.Visit;
             } else {
                 visitLinkButton.style.display = "none";
                 visitLink = undefined;
             }
-            
+
         }
     }
 
 }
 
 
-function formatAddress(nationalPark) {
-    return `${nationalPark.Address}, ${nationalPark.City}, ${nationalPark.State}, ${nationalPark.ZipCode}`
-}
 
-function onVisitLinkButtonClicked(){
-    if(visitLink != undefined){
+function onVisitLinkButtonClicked() {
+    if (visitLink != undefined) {
         window.open(visitLink, "_blank");
-    }else {
+    } else {
         console.log("no link");
     }
 }
 
 
+function formatAddress(nationalPark) {
+    return `${nationalPark.City}, ${nationalPark.State} ${nationalPark.ZipCode == 0 ? "" : nationalPark.ZipCode}`
+}
+
+
+function convertDmmToDms(DMM, Lat) {
+    //Isolate whole number
+    //keep decimal
+    //repeat 2 more times.
+    let direction;
+    if (DMM >= 0) {
+        if (Lat) {
+            direction = "N";
+        } else {
+            direction = "E";
+        }
+
+    } else {
+        if (Lat) {
+            direction = "S";
+        } else {
+            direction = "W";
+        }
+
+    }
+
+    let degrees = Math.floor(DMM);
+    DMM -= degrees;
+    DMM = DMM * 60;
+    let minutes = Math.floor(DMM);
+    DMM -= minutes;
+    DMM = DMM * 60;
+    let seconds = Math.ceil(DMM);
+    return `${degrees}\u00B0${direction},${minutes}'${seconds}"`
+}
+
+
+
+
+
+
+
+// function onLocationDropDownChanged() {
+
+//     outputDiv.innerHTML = "";
+//     let filteredParks = filterParks()
+
+//     for (let nationalPark of filteredParks) {
+
+//         let address = formatAddress(nationalPark);
+//         createCard(placeholderImageUrl, nationalPark.LocationID, nationalPark.LocationName, address, nationalPark.LocationID,
+//             "placeholder"
+//         );
+
+//     }
+
+// }
+
+// function onParkDropDownChanged() {
+
+//     outputDiv.innerHTML = "";
+//     let filteredParks = filterParks();
+//     for (let nationalPark of filteredParks) {
+
+
+
+//         let address = formatAddress(nationalPark);
+//         createCard(placeholderImageUrl, nationalPark.LocationID, nationalPark.LocationName, address, nationalPark.LocationID,
+//             "placeholder"
+//         );
+
+
+//     }
+// }
