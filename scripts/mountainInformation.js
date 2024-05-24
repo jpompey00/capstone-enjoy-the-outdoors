@@ -115,7 +115,7 @@ async function editModal(id) {
 
 
             
-            let isCloserToSunsetResult;
+            let isBeforeSunriseResult;
             //the try catch block is used here totry the API call from getSunsetForMountain.
             //if the call fails then it will throw an error but the program will keep running.
             try {
@@ -126,11 +126,12 @@ async function editModal(id) {
                 //The await operator stops this function until getSunSetForMountain finishes running to assign that
                 //value to the data
                 const data = await getSunsetForMountain(mountain.coords.lat, mountain.coords.lng)
+                console.log(data);
                 let sunrise = data.results.sunrise;
                 let sunset = data.results.sunset;
 
                 modalSunriseSunset.innerHTML = `Sunrise: ${sunrise} Sunset: ${sunset}`;
-                isCloserToSunsetResult = isCloserToSunset(sunrise, sunset);
+                isBeforeSunriseResult = isBeforeSunrise(sunrise, sunset);
 
             } catch (error) {
 
@@ -139,18 +140,18 @@ async function editModal(id) {
             }
 
             //changes the gradient based on what the current time of the browser is closer to.
-            if (isCloserToSunsetResult[0] == true) {
-                modalHoursUntilSunset.innerHTML = `${isCloserToSunsetResult[1]} hours until Sunset`;
-                modalBackgroundDiv.classList.remove("sunrise-gradient");
-                modalBackgroundDiv.classList.add("sunset-gradient");
-
-
-            } else {
-                modalHoursUntilSunset.innerHTML = `${isCloserToSunsetResult[1]} hours until Sunrise`;
-
+            if (isBeforeSunriseResult[0] == true) {
+                modalHoursUntilSunset.innerHTML = `${isBeforeSunriseResult[1]} hours until Sunrise`;
                 modalBackgroundDiv.classList.remove("sunset-gradient");
                 modalBackgroundDiv.classList.add("sunrise-gradient");
 
+
+            } else {
+                modalHoursUntilSunset.innerHTML = `${isBeforeSunriseResult[1]} hours until Sunset`;
+
+    
+                modalBackgroundDiv.classList.remove("sunrise-gradient");
+                modalBackgroundDiv.classList.add("sunset-gradient");
 
             }
         }
@@ -160,23 +161,30 @@ async function editModal(id) {
 
 
 //checks the current time against the sunrise and sunset time gained from the API call
-//returns wether it's closer to sunrise/sunset followed by the hours until. 
-function isCloserToSunset(sunrise, sunset) {
+//returns wether it's closer to sunrise/sunset followed by the hours until.
+//I have just realized this does not work :)
+function isBeforeSunrise(sunrise, sunset) {
     let hoursUntil;
 
-    let sunriseDate = convertTo24Hours(sunrise).getTime();
+
     let sunriseHours = convertTo24Hours(sunrise).getHours()
-    let sunsetDate = convertTo24Hours(sunset).getTime();
     let sunsetHours = convertTo24Hours(sunset).getHours();
-    let currentDate = new Date().getTime();
     let currentHours = new Date().getHours();
-    //means its closer to the sunset
-    if (Math.abs(currentDate - sunriseDate) > Math.abs(currentDate - sunsetDate)) {
-        hoursUntil = Math.abs(currentHours - sunsetHours);
+
+    //TEST DATA
+    //let currentHours = new Date(2024,5,24,16,0,0).getHours();
+    
+
+    if (currentHours <= sunriseHours) {
+        
+        hoursUntil = sunriseHours - currentHours;
         return [true, hoursUntil]
-    } else {
-        hoursUntil = Math.abs(currentHours - sunriseHours);
+    } else if(sunriseHours < currentHours  && sunsetHours >= currentHours){
+        hoursUntil = sunsetHours - currentHours;
         return [false, hoursUntil]
+    } else if(currentHours > sunsetHours){
+        hoursUntil = currentHours - sunriseHours;
+        return [true, hoursUntil]
     }
 
 }
@@ -233,6 +241,7 @@ function convertTo24Hours(time) {
 }
 
 //I am not sure if I should put this in its own script to keep API calls together.
+//does this work
 async function getSunsetForMountain(lat, lng) {
     let response = await fetch(
         `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&date=today`);
