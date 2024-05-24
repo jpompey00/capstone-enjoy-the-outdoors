@@ -88,7 +88,7 @@ body,
 }
 
 .mountain-info-header{
-    background-image: url(/images/assets/mountain_header.jpg);
+    background-image: url(/images/assets/edited_mountain_header2.jpg);
 }
 
 body {
@@ -98,7 +98,16 @@ body {
 }
 
 .mountainBody{
-    background-color: #679DD3;
+    /* background-color: #679DD3; */
+    background: hsla(42, 74%, 66%, 1);
+
+    background: linear-gradient(180deg, hsla(42, 74%, 66%, 1) 0%, hsla(42, 74%, 66%, 1) 31%, hsla(292, 56%, 52%, 1) 98%);
+    
+    background: -moz-linear-gradient(180deg, hsla(42, 74%, 66%, 1) 0%, hsla(42, 74%, 66%, 1) 31%, hsla(292, 56%, 52%, 1) 98%);
+    
+    background: -webkit-linear-gradient(180deg, hsla(42, 74%, 66%, 1) 0%, hsla(42, 74%, 66%, 1) 31%, hsla(292, 56%, 52%, 1) 98%);
+    
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#E8C268", endColorstr="#E8C268", GradientType=1 );
 }
 
 
@@ -108,3 +117,36 @@ background: linear-gradient(to bottom,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%);
 
 } */
 
+.sunset-gradient{
+    background: hsla(42, 80%, 52%, 1);
+
+    background: linear-gradient(270deg, hsla(42, 80%, 52%, 1) 0%, hsla(42, 80%, 52%, 1) 55%, hsla(292, 56%, 52%, 1) 99%);
+    
+    background: -moz-linear-gradient(270deg, hsla(42, 80%, 52%, 1) 0%, hsla(42, 80%, 52%, 1) 55%, hsla(292, 56%, 52%, 1) 99%);
+    
+    background: -webkit-linear-gradient(270deg, hsla(42, 80%, 52%, 1) 0%, hsla(42, 80%, 52%, 1) 55%, hsla(292, 56%, 52%, 1) 99%);
+    
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#E7AD23", endColorstr="#E7AD23", GradientType=1 );
+}
+
+
+.sunrise-gradient{
+    background: hsla(42, 80%, 52%, 1);
+
+    background: linear-gradient(90deg, rgb(218, 177, 81)0%, hsla(42, 80%, 52%, 1) 55%, hsla(292, 56%, 52%, 1) 99%);
+    
+    background: -moz-linear-gradient(90deg, rgb(218, 177, 81)0%, hsla(42, 80%, 52%, 1) 55%, hsla(292, 56%, 52%, 1) 99%);
+    
+    background: -webkit-linear-gradient(90deg, rgb(218, 177, 81)0%, hsla(42, 80%, 52%, 1) 55%, hsla(292, 56%, 52%, 1) 99%);
+    
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#E7AD23", endColorstr="#E7AD23", GradientType=1 );
+}
+
+
+.custom-colored-button{
+    background: #7bc4ce;
+}
+
+.custom-colored-button:hover{
+    background: #8ce3ec;
+}

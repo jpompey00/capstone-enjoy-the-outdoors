@@ -17,7 +17,7 @@
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet" />
- 
+
     <link rel="stylesheet" href="css/site.css">
 </head>
 
@@ -43,7 +43,7 @@
                         <li class="nav-item">
                             <a class="nav-link active" href="mountainInformation.html">Mountain Information</a>
                         </li>
-                        
+
                     </ul>
                 </div>
             </div>
@@ -54,9 +54,11 @@
 
 
     <main>
-        <div class="bg-image h-100">
-            <div class="mountain-info-header d-flex align-items-center py-4 h-100">
-                <div class="container">
+
+
+        <div class="bg-image h-100 ">
+            <div class="mountain-info-header d-flex align-items-center py-4 h-100  ">
+                <div class="container ">
                     <div class="card mask-custom p-4">
                         <div class="card-body">
                             <p class="h1 font-weight-bold mb-1 text-white">Mountain Information</p>
@@ -71,8 +73,9 @@
             </div>
 
 
+
             <!--Add Cards to This Element-->
-            <div id="cardContainer" class="container mt-2">
+            <div id="cardContainer" class="container mt-2 ">
 
             </div>
 
@@ -83,11 +86,13 @@
             <div id="portfolioModal1" class="modal fade" tabindex="-1" aria-labelledby="informationModal"
                 aria-hidden="true">
                 <div class="modal-dialog modal-xl">
-                    <div class="modal-content">
+
+                    <!--Add the gradient here-->
+                    <div id="modalBackgroundDiv" class="modal-content ">
                         <div class="modal-header border-0">
 
                             <!--Close Button-->
-                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button class="btn-close " type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
 
                         <div class="modal-body text-center pb-5">
@@ -97,7 +102,7 @@
                                         <div class="row">
                                             <div class="col">
                                                 <!-- Modal - Title-->
-                                                <h2 id="modalTitle" class="text-secondary text-uppercase mb-4">
+                                                <h2 id="modalTitle" class="text-white text-uppercase mb-4 fs-1">
                                                     Mountain Title
                                                 </h2>
 
@@ -124,7 +129,7 @@
                                                     <!--Modal Body-->
                                                     <div class="col ">
 
-                                                        <div class="modalTextArea ">
+                                                        <div class="modalTextArea text-white">
                                                             <p id="modalDescription" class="mb-5 fs-4 lh-1">Lorem ipsum
                                                                 dolor sit amet,
                                                                 consectetur adipisicing elit. Mollitia neque
@@ -137,8 +142,11 @@
                                                                 consequuntur itaque. Nam.
                                                             </p>
                                                             <p id="modalElevation" class=" fs-4">Elevation Here</p>
-                                                            <p id="modalEffort" class="fs-4">Effort Here</p>
+                                                            <p id="" class="fs-4">Effort: <span id="modalEffort"></span>
+                                                            </p>
                                                             <p id="modalSunriseSunset" class="fs-5">sunrise sunset</p>
+                                                            <p id="modalHoursUntilSunset" class="fs-5">time hours until
+                                                                sunset</p>
                                                             <p id="modalLatitudeAndLongitudeText" class="fs-6"></p>
                                                         </div>
                                                     </div>
@@ -154,7 +162,7 @@
                                                 </div>
                                                 <div class="col">
                                                     <!--Close Button-->
-                                                    <button id="closeModalButton" class="btn btn-primary"
+                                                    <button id="closeModalButton" class="btn btn-primary text-black custom-colored-button"
                                                         data-bs-dismiss="modal">
                                                         Close Window
                                                     </button>

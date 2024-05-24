@@ -11,6 +11,8 @@ const modalElevation = document.getElementById("modalElevation");
 const modalEffort = document.getElementById("modalEffort");
 const modalLatitudeAndLongitudeText = document.getElementById("modalLatitudeAndLongitudeText");
 const modalSunriseSunset = document.getElementById("modalSunriseSunset");
+const modalHoursUntilSunset = document.getElementById("modalHoursUntilSunset");
+const modalBackgroundDiv = document.getElementById("modalBackgroundDiv");
 
 
 /*
@@ -22,34 +24,11 @@ Maybe make it blink
 
 window.onload = function () {
     loadDropDown();
-
+   
     //parseSunriseSunset();
 
 }
 
-function isCloserToSunset(sunrise, sunset) {
-
-    //whichever difference is smaller will be what you're closer too?
-    //will there ever be a situation where the sunrise will be bigger than the current?
-
-    //Do it in the absolute value for both of them, 
-    //the difference is what you're closer to
-
-    //have it return true or false, call it closerToSunset.
-    //make a catch for it being equal if that ever happens ever. later
-
-
-    let sunriseDate = convertTo24Hours(sunrise).getTime();
-    let sunsetDate = convertTo24Hours(sunset).getTime();
-    let currentDate = new Date().getTime();
-    //means its closer to the sunset
-    if (Math.abs(currentDate - sunriseDate) > Math.abs(currentDate - sunsetDate)) {
-        return true
-    } else {
-        return false
-    }
-
-}
 
 
 function loadDropDown() {
@@ -113,9 +92,7 @@ function createListingCard(mountain) {
 
 //this works
 async function editModal(id) {
-    let sunrise;
-    let sunset;
-    let data;
+
     for (let mountain of mountainsArray) {
         if (mountain.name == id) {
             
@@ -126,36 +103,86 @@ async function editModal(id) {
 
             modalDescription.innerHTML = mountain.desc;
             modalElevation.innerHTML = `Elevation: ${mountain.elevation}`;
-            modalEffort.innerHTML = `Effort: ${mountain.effort}`;
+            modalEffort.innerHTML = `${mountain.effort}`;
+            
+            //changes color
+            if(modalEffort.innerHTML == "Strenuous"){
+                modalEffort.classList.remove("text-success");
+                modalEffort.classList.add("text-danger", "fs-3");
+            } else {
+                modalEffort.classList.add("text-success");
+                modalEffort.classList.remove("text-danger", "fs-3");
+            }
             modalLatitudeAndLongitudeText.innerHTML = `${convertDmmToDms(mountain.coords.lat, true)}, 
             ${convertDmmToDms(mountain.coords.lng, false)}`;
 
             //analyze how this works so i can explain it
             //put these in a try catch block
-            data = await getSunsetForMountain(mountain.coords.lat, mountain.coords.lng)
+            let data = await getSunsetForMountain(mountain.coords.lat, mountain.coords.lng)
             //WHY DONT THIS????
 
-            sunrise = data.results.sunrise;
-            sunset = data.results.sunset;
+            let sunrise = data.results.sunrise;
+            let sunset = data.results.sunset;
 
             modalSunriseSunset.innerHTML = `Sunrise: ${sunrise} Sunset: ${sunset}`;
 
-            if(isCloserToSunset(sunrise,sunset)){
+            let isCloserToSunsetResult = isCloserToSunset(sunrise, sunset);
+
+            if(isCloserToSunsetResult[0] == true){
+                modalHoursUntilSunset.innerHTML = `${isCloserToSunsetResult[1]} hours until Sunset`;
+                modalBackgroundDiv.classList.remove("sunrise-gradient");
+                modalBackgroundDiv.classList.add("sunset-gradient")
+                // modalBackgroundDiv.classList.add("night-time-gradient");
                 //change the background color of the modal here
+
                 //when it's closer to sunset, have the modal have the background color
                 //with a gradient that's more night themed
 
             } else {
+                modalHoursUntilSunset.innerHTML = `${isCloserToSunsetResult[1]} hours until Sunrise`;
+
+                modalBackgroundDiv.classList.remove("sunset-gradient");
+                modalBackgroundDiv.classList.add("sunrise-gradient")
                 //change the backgrounc olor of the modal here
                 //when its closer to sunrise, have the modal have the background color
                 //with a day themed gradient
-                
+
             }
         }
     }
 
 }
 
+
+
+function isCloserToSunset(sunrise, sunset) {
+
+    //whichever difference is smaller will be what you're closer too?
+    //will there ever be a situation where the sunrise will be bigger than the current?
+
+    //Do it in the absolute value for both of them, 
+    //the difference is what you're closer to
+
+    //have it return true or false, call it closerToSunset.
+    //make a catch for it being equal if that ever happens ever. later
+    let hoursUntil;
+
+    let sunriseDate = convertTo24Hours(sunrise).getTime();
+    let sunriseHours = convertTo24Hours(sunrise).getHours()
+    let sunsetDate = convertTo24Hours(sunset).getTime();
+    let sunsetHours = convertTo24Hours(sunset).getHours();
+    let currentDate = new Date().getTime();
+    let currentHours = new Date().getHours();
+    //means its closer to the sunset
+    if (Math.abs(currentDate - sunriseDate) > Math.abs(currentDate - sunsetDate)) {
+        hoursUntil= Math.abs(currentHours-sunsetHours);
+        return [true, hoursUntil]
+    } else {
+        hoursUntil = Math.abs(currentHours - sunriseHours);
+        return [false, hoursUntil]
+    }
+
+}
 
 
 
