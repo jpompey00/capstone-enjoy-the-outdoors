@@ -15,24 +15,16 @@ const modalHoursUntilSunset = document.getElementById("modalHoursUntilSunset");
 const modalBackgroundDiv = document.getElementById("modalBackgroundDiv");
 
 
-/*
-TODO:
-
-Add the part of the modal that will show the time.
-Maybe make it blink
-*/
 
 window.onload = function () {
     loadDropDown();
-   
-    //parseSunriseSunset();
+
 
 }
 
 
 
 function loadDropDown() {
-
 
     for (let mountain of mountainsArray) {
         createListingCard(mountain);
@@ -41,15 +33,20 @@ function loadDropDown() {
 
 
 
-
+//Creates the card listing for the page
 function createListingCard(mountain) {
     //div
     const cardDiv = document.createElement("div");
     cardDiv.classList.add("card", "mask-custom", "p-3", "my-3", "cardListing");
     cardDiv.dataset.bsToggle = "modal";
     cardDiv.dataset.bsTarget = "#portfolioModal1";
+    //sets the id of the card
     cardDiv.id = mountain.name;
+
+    //had to set an onClick even through HTMLEvents, that would pass the id from the card 
+    //to the function that changes the modal
     cardDiv.setAttribute("onClick", "editModal(this.id)")
+    
     //div
     const cardBodyDiv = document.createElement("div");
     cardBodyDiv.classList.add("card-body");
@@ -90,12 +87,12 @@ function createListingCard(mountain) {
 }
 
 
-//this works
+//Edits the Modal that appears when a card is pressed
+//The async call was needed so I could use the await operator
 async function editModal(id) {
-
     for (let mountain of mountainsArray) {
         if (mountain.name == id) {
-            
+
             modalTitle.innerHTML = mountain.name;
 
             modalImage.src = `images/${mountain.img}`;
@@ -104,48 +101,56 @@ async function editModal(id) {
             modalDescription.innerHTML = mountain.desc;
             modalElevation.innerHTML = `Elevation: ${mountain.elevation}`;
             modalEffort.innerHTML = `${mountain.effort}`;
-            
-            //changes color
-            if(modalEffort.innerHTML == "Strenuous"){
+
+            //changes the text color in the modal
+            if (modalEffort.innerHTML == "Strenuous") {
                 modalEffort.classList.remove("text-success");
                 modalEffort.classList.add("text-danger", "fs-3");
             } else {
                 modalEffort.classList.add("text-success");
                 modalEffort.classList.remove("text-danger", "fs-3");
             }
-            modalLatitudeAndLongitudeText.innerHTML = `${convertDmmToDms(mountain.coords.lat, true)}, 
-            ${convertDmmToDms(mountain.coords.lng, false)}`;
+            modalLatitudeAndLongitudeText.innerHTML = `${convertDdToDms(mountain.coords.lat, true)}, 
+            ${convertDdToDms(mountain.coords.lng, false)}`;
 
-            //analyze how this works so i can explain it
-            //put these in a try catch block
-            let data = await getSunsetForMountain(mountain.coords.lat, mountain.coords.lng)
-            //WHY DONT THIS????
 
-            let sunrise = data.results.sunrise;
-            let sunset = data.results.sunset;
+            
+            let isCloserToSunsetResult;
+            //the try catch block is used here totry the API call from getSunsetForMountain.
+            //if the call fails then it will throw an error but the program will keep running.
+            try {
 
-            modalSunriseSunset.innerHTML = `Sunrise: ${sunrise} Sunset: ${sunset}`;
+                //the await operator was needed here because the getSunset function can operate at the same time
+                //as the rest of the program. This can lead to the program trying to get a value that doesn't exist yet
+                //because the other function hasn't finished. 
+                //The await operator stops this function until getSunSetForMountain finishes running to assign that
+                //value to the data
+                const data = await getSunsetForMountain(mountain.coords.lat, mountain.coords.lng)
+                let sunrise = data.results.sunrise;
+                let sunset = data.results.sunset;
 
-            let isCloserToSunsetResult = isCloserToSunset(sunrise, sunset);
+                modalSunriseSunset.innerHTML = `Sunrise: ${sunrise} Sunset: ${sunset}`;
+                isCloserToSunsetResult = isCloserToSunset(sunrise, sunset);
 
-            if(isCloserToSunsetResult[0] == true){
+            } catch (error) {
+
+                console.log("Error calling API");
+
+            }
+
+            //changes the gradient based on what the current time of the browser is closer to.
+            if (isCloserToSunsetResult[0] == true) {
                 modalHoursUntilSunset.innerHTML = `${isCloserToSunsetResult[1]} hours until Sunset`;
                 modalBackgroundDiv.classList.remove("sunrise-gradient");
-                modalBackgroundDiv.classList.add("sunset-gradient")
-                // modalBackgroundDiv.classList.add("night-time-gradient");
-                //change the background color of the modal here
+                modalBackgroundDiv.classList.add("sunset-gradient");
 
-                //when it's closer to sunset, have the modal have the background color
-                //with a gradient that's more night themed
 
             } else {
                 modalHoursUntilSunset.innerHTML = `${isCloserToSunsetResult[1]} hours until Sunrise`;
 
                 modalBackgroundDiv.classList.remove("sunset-gradient");
-                modalBackgroundDiv.classList.add("sunrise-gradient")
-                //change the backgrounc olor of the modal here
-                //when its closer to sunrise, have the modal have the background color
-                //with a day themed gradient
+                modalBackgroundDiv.classList.add("sunrise-gradient");
+
 
             }
         }
@@ -154,17 +159,9 @@ async function editModal(id) {
 }
 
 
-
+//checks the current time against the sunrise and sunset time gained from the API call
+//returns wether it's closer to sunrise/sunset followed by the hours until. 
 function isCloserToSunset(sunrise, sunset) {
-
-    //whichever difference is smaller will be what you're closer too?
-    //will there ever be a situation where the sunrise will be bigger than the current?
-
-    //Do it in the absolute value for both of them, 
-    //the difference is what you're closer to
-
-    //have it return true or false, call it closerToSunset.
-    //make a catch for it being equal if that ever happens ever. later
     let hoursUntil;
 
     let sunriseDate = convertTo24Hours(sunrise).getTime();
@@ -175,7 +172,7 @@ function isCloserToSunset(sunrise, sunset) {
     let currentHours = new Date().getHours();
     //means its closer to the sunset
     if (Math.abs(currentDate - sunriseDate) > Math.abs(currentDate - sunsetDate)) {
-        hoursUntil= Math.abs(currentHours-sunsetHours);
+        hoursUntil = Math.abs(currentHours - sunsetHours);
         return [true, hoursUntil]
     } else {
         hoursUntil = Math.abs(currentHours - sunriseHours);
@@ -185,13 +182,14 @@ function isCloserToSunset(sunrise, sunset) {
 }
 
 
-
-function convertDmmToDms(DMM, Lat) {
+//converts the latitue or longitude from the data that is in Decimal Degrees form
+//to DMS form
+function convertDdToDms(DD, Lat) {
     //Isolate whole number
     //keep decimal
     //repeat 2 more times.
     let direction;
-    if (DMM >= 0) {
+    if (DD >= 0) {
         if (Lat) {
             direction = "N";
         } else {
@@ -207,17 +205,19 @@ function convertDmmToDms(DMM, Lat) {
 
     }
 
-    let degrees = Math.floor(DMM);
-    DMM -= degrees;
-    DMM = DMM * 60;
-    let minutes = Math.floor(DMM);
-    DMM -= minutes;
-    DMM = DMM * 60;
-    let seconds = Math.ceil(DMM);
+    let degrees = Math.floor(DD);
+    DD -= degrees;
+    DD = DD * 60;
+    let minutes = Math.floor(DD);
+    DD -= minutes;
+    DD = DD * 60;
+    let seconds = Math.ceil(DD);
     return `${degrees}\u00B0${direction},${minutes}'${seconds}"`
 }
 
 
+//converts the time that comes from the API call to 24 hour time format.
+//This was done because of how the time that came from it was formatted.
 function convertTo24Hours(time) {
     let convertedTime = new Date();
 
@@ -232,7 +232,7 @@ function convertTo24Hours(time) {
     return convertedTime
 }
 
-//put this in its own script for API calls
+//I am not sure if I should put this in its own script to keep API calls together.
 async function getSunsetForMountain(lat, lng) {
     let response = await fetch(
         `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&date=today`);

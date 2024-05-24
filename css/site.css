@@ -1,3 +1,9 @@
+:root{
+    --bs-body-font-family: Nunito, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+}
+
+
+
 .portfolio-item .portfolio-item-caption:hover {
     opacity: 1;
 }
@@ -93,8 +99,10 @@ body,
 
 body {
 
-    font-family: "Varela Round", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    /* font-family: "Varela Round", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; */
+    font-family: var(--bs-body-font-family);
     background-color: #CEDFEA;
+    letter-spacing: 0.0625em;
 }
 
 .mountainBody{

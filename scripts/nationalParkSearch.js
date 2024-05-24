@@ -1,15 +1,15 @@
 "use strict";
-//intellisense
 
+
+//array of generated images to use for the site
 const images = ["park00.png", "park01.png","park02.png","park03.png",
 "park04.png","park05.png","park06.png","park07.png","park08.png","park09.png",
 "park10.png","park11.png","park12.png", "wizardkickflip.png"];
 
 
-//replace with query selector for fun.
 const locationDropDown = document.getElementById("locationDropDown");
 const parkTypeDropDown = document.getElementById("parkTypeDropDown");
-const viewAllButton = document.getElementById("viewAllButton");
+
 
 const locationOutputDiv = document.getElementById("locationOutputDiv");
 const parkTypeOutputDiv = document.getElementById("parkTypeOutputDiv");
@@ -36,16 +36,6 @@ const modalLatitudeAndLongitudeText = document.getElementById("modalLatitudeAndL
 let visitLink;
 
 
-
-//randomly apply image.
-const placeholderImageUrl = "images/assets/placeholder.png";
-
-//TODO
-/*
-
-add comments
-add pictures, clean up card code.
-*/
 
 
 window.onload = function () {
@@ -87,25 +77,16 @@ function loadDropDowns() {
     }
 }
 
-function onViewAllButtonClicked() {
-    locationOutputDiv.innerHTML = "";
-    for (let nationalPark of nationalParksArray) {
-        let locationOutput = document.createElement("p");
-        locationOutput.innerHTML = nationalPark.LocationName;
-        locationOutputDiv.appendChild(locationOutput);
-    }
-}
-
-
-
+//updates the output of the site based on the filter
 function updateOutput() {
     outputDiv.innerHTML = "";
     
     let filteredParks = filterParks();
     for (let nationalPark of filteredParks) {
-
+        let random = Math.floor(Math.random() * (images.length))
         let address = formatAddress(nationalPark);
-        createCard( `images/park-images/edited-images/${images[createRandomNumber()]}` , nationalPark.LocationID, nationalPark.LocationName, address, nationalPark.LocationID,
+
+        createCard( `images/park-images/edited-images/${images[random]}` , nationalPark.LocationID, nationalPark.LocationName, address, nationalPark.LocationID,
 
         );
 
@@ -113,10 +94,11 @@ function updateOutput() {
 }
 
 
-//could not reset the dropdown
+
 function onLocationCheckboxClicked() {
     updateOutput();
 
+    //disables the box if the checkbox isn't checked
     if (locationCheckbox.checked) {
 
         locationDropDown.removeAttribute('disabled');
@@ -137,7 +119,8 @@ function onParkTypeCheckboxClicked() {
 }
 
 
-
+//Filters the park based on the filters selected
+//Has the ability to check by one or both.
 function filterParks() {
 
     let nationalParks = nationalParksArray;
@@ -155,69 +138,71 @@ function filterParks() {
         }
     }
 
-    console.log(nationalParks);
+    // console.log(nationalParks);
     if((locationCheckbox.checked && locationDropDown.value != "" )|| (parkTypeCheckbox.checked && parkTypeDropDown.value != "" )){
-            console.log("returning");
+            // console.log("returning");
         return nationalParks;
     } else {
-        console.log("not retuning")
+        // console.log("not retuning")
         return [];
     }
 }
 
 
 
-
-//Needs to be prettied up
+//creates the card. 
+//Concept I want to focus on is the data attribute I used with the html
+//Element to pass information from the HTML to the script
 function createCard(imageUrl, id, title, mainText, footerText) {
-    // div col-4
+ 
     let colDiv = document.createElement("div");
     colDiv.classList.add("col-4", "my-4");
-    // div card text-bg-dark image-hover
-    //TODO: ADD THE DATA-BS-TOGGLE AND TARGET AND POINT IT CORRECTLY
+  
+    
     let cardDiv = document.createElement("div");
     cardDiv.classList.add("card", "text-bg-dark", "image-hover");
     cardDiv.dataset.bsToggle = "modal";
     cardDiv.id = id;
     cardDiv.setAttribute("data-img-url", imageUrl);
 
-    console.log(imageUrl);
+
+    //The normal way of onclicking didn't work, so I used the HTML event instead of the
+    //javascript. But because the images were randomly assigned in a different function
+    //I had no way to get that image and display it through HTML, because cards were being
+    //created dynamically.
+    //The solution I found was using a data attribute, whos purpose is to pass specified
+    //data from the HTML. So i used a data attribute named "data-img-url"
+    //Then passe dit into the edit modal function to get the path for that image.
     cardDiv.setAttribute("onClick", "editModal(this.id, this.getAttribute('data-img-url'))");
 
 
-    //change this to a variable maybe
     cardDiv.dataset.bsTarget = "#informationModal";
-    // img
     let image = document.createElement("img");
     image.classList.add("card-img");
-    // div card-img-overlay
     let cardImgOverlayDiv = document.createElement("div");
     cardImgOverlayDiv.classList.add("card-img-overlay", "cardGradient", "d-flex", "flex-column",
         "justify-content-end"
     );
 
-    // h5 -Title test
     let cardTitleH5 = document.createElement("h5");
     cardTitleH5.classList.add("card-title");
-    // p - Card Text
+    
     let mainCardText = document.createElement("p");
     mainCardText.classList.add("card-text");
-    //p - Card Text
+    
     let footerCardText = document.createElement("p");
     footerCardText.classList.add("card-text");
-    //add something that tells users to click to learn more
+   
 
-    //values that I need to change.
-    //TODO fix the size
+   //values to edit
     image.src = imageUrl;
     cardTitleH5.innerHTML = title;
     mainCardText.innerHTML = mainText;
     footerCardText.innerHTML = footerText;
 
-    //add a check for the websiteUrl and make a button for it.
+    
 
-    //This is going to be awful :)
-    //rowDiv.appendChild(colDiv);
+    
     colDiv.appendChild(cardDiv);
     cardDiv.appendChild(image);
     cardDiv.appendChild(cardImgOverlayDiv);
@@ -232,20 +217,19 @@ function createCard(imageUrl, id, title, mainText, footerText) {
 
 
 
-//I FIGURED IT OUT
-//check for when number is 0 or when Address is 0
+//Edits the modal from the page.
+//These parameters come from the HTML and this script isn't called in the javascript
 function editModal(id, imgUrl) {
 
-    console.log(id);
+
     for (let nationalPark of nationalParksArray) {
         if (nationalPark.LocationID == id) {
+            
             modalTitle.innerHTML = nationalPark.LocationName;
-            // modalImage.src = "images/park-images/edited-images/park01.png";
+
             modalImage.src = imgUrl;
-            // console.log(placeholderImageUrl);
-            // console.log(imgUrl);
 
-
+            //some values have the address phone number or fax set to 0, so these Ternary Operators handle those situations.
             modalAddress1.innerHTML = nationalPark.Address == 0 ? formatAddress(nationalPark) : nationalPark.Address;
             modalAddress2.innerHTML = nationalPark.Address == 0 ? "" : formatAddress(nationalPark);
 
@@ -253,7 +237,7 @@ function editModal(id, imgUrl) {
             modalPhoneText.innerHTML = nationalPark.Phone == 0 ? "" : `Phone: ${nationalPark.Phone}`;
             modalFaxText.innerHTML = nationalPark.Fax == 0 ? "" : `Fax ${nationalPark.Fax}`;
 
-            modalLatitudeAndLongitudeText.innerHTML = `${convertDmmToDms(nationalPark.Latitude, true)}, ${convertDmmToDms(nationalPark.Longitude, false)}`
+            modalLatitudeAndLongitudeText.innerHTML = `${convertDdToDms(nationalPark.Latitude, true)}, ${convertDdToDms(nationalPark.Longitude, false)}`
             if (nationalPark.Visit != undefined) {
                 visitLinkButton.style.display = "inline";
                 visitLink = nationalPark.Visit;
@@ -268,7 +252,7 @@ function editModal(id, imgUrl) {
 }
 
 
-//better way to do this but it works for now.
+//opens the link to the new page when button is clicked
 function onVisitLinkButtonClicked() {
     if (visitLink != undefined) {
         window.open(visitLink, "_blank");
@@ -277,16 +261,16 @@ function onVisitLinkButtonClicked() {
     }
 }
 
-
+//formats the output for the address
 function formatAddress(nationalPark) {
+    //the last expression contains a ternary operator that will leave out the zipcode if its 0
     return `${nationalPark.City}, ${nationalPark.State} ${nationalPark.ZipCode == 0 ? "" : nationalPark.ZipCode}`
 }
 
 
-function convertDmmToDms(DMM, Lat) {
-    //Isolate whole number
-    //keep decimal
-    //repeat 2 more times.
+//converts the longitude and latitude from the DD system to the DMS system for display on the Modal
+function convertDdToDms(DMM, Lat) {
+
     let direction;
     if (DMM >= 0) {
         if (Lat) {
@@ -316,44 +300,6 @@ function convertDmmToDms(DMM, Lat) {
 
 
 
-function createRandomNumber(){
-    //console.log(images.length)
-    let random = Math.floor(Math.random() * (images.length) )
-    console.log(random);
-    return random
-}
 
 
 
-// function onLocationDropDownChanged() {
-
-//     outputDiv.innerHTML = "";
-//     let filteredParks = filterParks()
-
-//     for (let nationalPark of filteredParks) {
-
-//         let address = formatAddress(nationalPark);
-//         createCard(placeholderImageUrl, nationalPark.LocationID, nationalPark.LocationName, address, nationalPark.LocationID,
-//             "placeholder"
-//         );
-
-//     }
-
-// }
-
-// function onParkDropDownChanged() {
-
-//     outputDiv.innerHTML = "";
-//     let filteredParks = filterParks();
-//     for (let nationalPark of filteredParks) {
-
-
-
-//         let address = formatAddress(nationalPark);
-//         createCard(placeholderImageUrl, nationalPark.LocationID, nationalPark.LocationName, address, nationalPark.LocationID,
-//             "placeholder"
-//         );
-
-
-//     }
-// }
