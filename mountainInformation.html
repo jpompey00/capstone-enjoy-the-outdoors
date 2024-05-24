@@ -21,8 +21,9 @@
     <link rel="stylesheet" href="css/site.css">
 </head>
 
+
 <body class="mountainBody">
-    <!--Change The Body for the website-->
+    <!--Header-->
     <header>
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
@@ -55,34 +56,39 @@
 
     <main>
 
+        <!--Info Box-->
+        <section>
+            <div class="bg-image h-100 ">
+                <div class="mountain-info-header d-flex align-items-center py-4 h-100  ">
+                    <div class="container ">
+                        <div class="card mask-custom p-4">
+                            <div class="card-body">
+                                <p class="h1 font-weight-bold mb-1 text-white">Mountain Information</p>
 
-        <div class="bg-image h-100 ">
-            <div class="mountain-info-header d-flex align-items-center py-4 h-100  ">
-                <div class="container ">
-                    <div class="card mask-custom p-4">
-                        <div class="card-body">
-                            <p class="h1 font-weight-bold mb-1 text-white">Mountain Information</p>
-
-                            <div class="row justify-content-center">
-                                <div class="col">
+                                <div class="row justify-content-center">
+                                    <div class="col">
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+
+        </section>
 
 
-
-            <!--Add Cards to This Element-->
+        <!--Container For Cards-->
+        <section>
             <div id="cardContainer" class="container mt-2 ">
 
             </div>
+        </section>
 
 
 
-            <!--NEW MODAL-->
+        <!--Modal-->
 
+        <section>
             <div id="portfolioModal1" class="modal fade" tabindex="-1" aria-labelledby="informationModal"
                 aria-hidden="true">
                 <div class="modal-dialog modal-xl">
@@ -92,7 +98,8 @@
                         <div class="modal-header border-0">
 
                             <!--Close Button-->
-                            <button class="btn-close " type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button class="btn-close " type="button" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                         </div>
 
                         <div class="modal-body text-center pb-5">
@@ -162,7 +169,8 @@
                                                 </div>
                                                 <div class="col">
                                                     <!--Close Button-->
-                                                    <button id="closeModalButton" class="btn btn-primary text-black custom-colored-button"
+                                                    <button id="closeModalButton"
+                                                        class="btn btn-primary text-black custom-colored-button"
                                                         data-bs-dismiss="modal">
                                                         Close Window
                                                     </button>
@@ -178,27 +186,14 @@
                     </div>
                 </div>
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
+        </section>
 
 
     </main>
 
 
     <footer>
-
-
+        <footer class="footer custom-colored-background small fw-bold text-center text-black-50"><div class="container px-4 px-lg-5">Copyright &copy; Julian Pompey 2023</div></footer>
     </footer>
 
 

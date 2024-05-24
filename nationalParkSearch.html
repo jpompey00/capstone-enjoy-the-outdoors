@@ -42,21 +42,20 @@
                         <li class="nav-item">
                             <a class="nav-link" href="mountainInformation.html">Mountain Information</a>
                         </li>
-                        
+
                     </ul>
                 </div>
             </div>
         </nav>
-
-
     </header>
 
 
     <main>
 
-        <!--Search Box intro with Glass Card-->
-        <section class="intro">
-            <div class="bg-image h-100">
+        <div class="bg-image h-100">
+
+            <!--Filter Box-->
+            <section>
                 <div class="national-park-header d-flex align-items-center py-4 h-100">
                     <div class="container">
                         <div class="card mask-custom p-4">
@@ -77,43 +76,31 @@
                                                 class="form-select form-control form-control-lg">
 
                                             </select>
-
                                         </div>
-
-
-
-
-
-
                                     </div>
-
                                     <div class="col">
                                         <label class="form-label text-white" for="locationDropDown">Park Type</label>
                                         <div class="input-group mb-3 ">
                                             <div class="input-group-text">
-                                                <input id="parkTypeCheckbox" class ="form-check-input mt-0" type="checkbox"
-                                                    value="" aria-label="Checkbox for following text input">
+                                                <input id="parkTypeCheckbox" class="form-check-input mt-0"
+                                                    type="checkbox" value=""
+                                                    aria-label="Checkbox for following text input">
                                             </div>
                                             <select id="parkTypeDropDown"
                                                 class="form-select form-control form-control-lg" disabled>
 
                                             </select>
                                         </div>
-
-
-
-
-
-
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </section>
 
-                <!--Output Section-->
+            <!--Output Section-->
+            <section>
                 <div class="d-flex align-items-center h-100">
                     <div class="container">
                         <div class="row justify-content-center">
@@ -127,11 +114,11 @@
                         </div>
                     </div>
                 </div>
+            </section>
 
-
-
-
-
+            <!--Modal-->
+            <!--Opted for 1 Modal and editing it through HTML rather than having multiple Modals to switch between-->
+            <section>
                 <div id="informationModal" class="modal fade" tabindex="-1" aria-labelledby="informationModal"
                     aria-hidden="true">
                     <div class="modal-dialog modal-xl">
@@ -204,13 +191,15 @@
                                                     </div>
                                                     <div class="col">
                                                         <!--Close Button-->
-                                                        <button id="closeModalButton" class="btn btn-primary text-black custom-colored-button"
+                                                        <button id="closeModalButton"
+                                                            class="btn btn-primary text-black custom-colored-button"
                                                             data-bs-dismiss="modal">
                                                             Close Window
                                                         </button>
 
                                                         <!--Button to Visit Link-->
-                                                        <button id="visitLinkButton" class="btn btn-primary text-black custom-colored-button">
+                                                        <button id="visitLinkButton"
+                                                            class="btn btn-primary text-black custom-colored-button">
                                                             Visit
                                                         </button>
                                                     </div>
@@ -224,18 +213,18 @@
                         </div>
                     </div>
                 </div>
+            </section>
+        </div>
 
-
-            </div>
-        </section>
     </main>
 
 
 
 
     <footer>
-
-
+        <footer class="footer custom-colored-background small fw-bold text-center text-black-50">
+            <div class="container px-4 px-lg-5">Copyright &copy; Julian Pompey 2023</div>
+        </footer>
     </footer>
 
 
